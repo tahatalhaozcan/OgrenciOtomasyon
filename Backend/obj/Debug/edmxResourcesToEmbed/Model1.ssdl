@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="beunyemekModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="admin">
+    <Key>
+      <PropertyRef Name="adminID" />
+    </Key>
+    <Property Name="adminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="adminUsername" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="adminPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ogrenci">
+    <Key>
+      <PropertyRef Name="ogrenciID" />
+    </Key>
+    <Property Name="ogrenciID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ogrenciNo" Type="bigint" Nullable="false" />
+    <Property Name="ogrenciAd" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ogrenciSoyad" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ogrenciFakulte" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ogrenciBolum" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="siparis">
+    <Key>
+      <PropertyRef Name="siparisID" />
+    </Key>
+    <Property Name="siparisID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ogrenciID" Type="int" Nullable="false" />
+    <Property Name="urunID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="urun">
+    <Key>
+      <PropertyRef Name="urunID" />
+    </Key>
+    <Property Name="urunID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="urunAd" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="urunFiyat" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_siparis_ogrenci">
+    <End Role="ogrenci" Type="Self.ogrenci" Multiplicity="1" />
+    <End Role="siparis" Type="Self.siparis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ogrenci">
+        <PropertyRef Name="ogrenciID" />
+      </Principal>
+      <Dependent Role="siparis">
+        <PropertyRef Name="ogrenciID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_siparis_urun">
+    <End Role="urun" Type="Self.urun" Multiplicity="1" />
+    <End Role="siparis" Type="Self.siparis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="urun">
+        <PropertyRef Name="urunID" />
+      </Principal>
+      <Dependent Role="siparis">
+        <PropertyRef Name="urunID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="beunyemekModelStoreContainer">
+    <EntitySet Name="admin" EntityType="Self.admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ogrenci" EntityType="Self.ogrenci" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="siparis" EntityType="Self.siparis" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="urun" EntityType="Self.urun" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_siparis_ogrenci" Association="Self.FK_siparis_ogrenci">
+      <End Role="ogrenci" EntitySet="ogrenci" />
+      <End Role="siparis" EntitySet="siparis" />
+    </AssociationSet>
+    <AssociationSet Name="FK_siparis_urun" Association="Self.FK_siparis_urun">
+      <End Role="urun" EntitySet="urun" />
+      <End Role="siparis" EntitySet="siparis" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
